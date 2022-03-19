@@ -1,112 +1,87 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React,{useState} from 'react'
+import { SafeAreaView,View, Text,StyleSheet,TouchableHighlight,TextInput,Image } from 'react-native'
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default function calcimc() {
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+  
+  const [peso,setPeso] = useState(0)
+  const [altura,setAltura] = useState(0)
+  const [resultado,setResultado] = useState(0)
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const calcImc=()=>{
+    if(peso==0 || !peso){
+      alert('Informe o peso')
+      return
+    }
+    if(altura==0 || !altura){
+      alert('Informe a Altura')
+      return
+    }
+    const r = peso/(Math.pow(altura,2))
+    setResultado(r.toFixed(1))
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={estilos.corpo}>
+      <View style={estilos.bloco}> 
+      <Text>Calculadora de IMC</Text>
+      </View>
+      <View style={estilos.bloco}>
+        <Text>Informe seu peso:</Text>
+        <TextInput style={estilos.txt} autoFocus={true} keyboardType="numeric" onChangeText={text=>setPeso(text)}/>
+      </View>
+      <View style={estilos.bloco}>
+        <Text>Informe sua altura:</Text>
+        <TextInput style={estilos.txt} autoFocus={false} keyboardType="numeric" onChangeText={text=>setAltura(text)}/>
+      </View>
+     <View style={estilos.bloco}>
+       <TouchableHighlight style={estilos.btnCalc} onPress={()=>calcImc()} ><Text style={estilos.txtBtn}>Calcular IMC</Text></TouchableHighlight>
+     </View>
+      <View style={estilos.bloco}>
+        <Text>Seu IMC é:{resultado}</Text>
+      </View>
+      <View style={estilos.bloco}>
+      <Image source={require('./img/tabela_imc.png')} style={estilos.tabela}/>
+      </View>
+    
     </SafeAreaView>
-  );
-};
+  )
+}
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+const estilos = StyleSheet.create({
+  corpo:{
+    padding:10,
+
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  bloco:{
+    marginBottom:20
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  txt:{
+    width:'100%',
+    borderWidth:1,
+    borderColor:'#000',
+    padding:10,
+    borderRadius:10,
   },
-  highlight: {
-    fontWeight: '700',
+  btnCalc:{
+    backgroundColor:'blue',
+    padding:10,
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:20,
   },
+  txtBtn:{
+    fontSize:15,
+    textTransform:'uppercase',
+    color:'#fff',
+  },
+  tabela:{
+    width:'100%',
+    resizeMode:'contain',
+    marginTop:-5,
+
+  },
+
 });
-
-export default App;
